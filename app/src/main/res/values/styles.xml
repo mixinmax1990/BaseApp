@@ -1,0 +1,58 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="darkButtonText">@color/textPrimaryDark</item>
+
+        <item name="android:windowBackground">@color/bgLight</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="bg">@color/white</item>
+        <item name="textPrimaryColor">@color/textPrimaryLight</item>
+        <item name="textSecondaryColor">@color/textSecondaryLight</item>
+        <item name="contrastBG">@color/contrastBGLight</item>
+
+        <item name="cardPrimaryColor">@color/cardPrimaryLight</item>
+        <item name="cardSecondaryColor">@color/cardSecondaryLight</item>
+        <item name="newMessageGreen">@color/newmessage_bubble</item>
+        <item name="chatSelectHighlight">@color/selectedChatHighlightLight</item>
+        <item name="avatarNoImgBG">@color/darkgrey</item>
+        <item name="avatarNoImgFG">@color/lightgrey</item>
+
+    </style>
+
+
+    <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="darkButtonText">@color/textPrimaryDark</item>
+
+        <item name="android:windowBackground">@color/bgDark</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="bg">@color/bgDark</item>
+        <item name="textPrimaryColor">@color/textPrimaryDark</item>
+        <item name="textSecondaryColor">@color/textSecondaryDark</item>
+        <item name="contrastBG">@color/contrastBGDark</item>
+
+        <item name="cardPrimaryColor">@color/cardPrimaryDark</item>
+        <item name="cardSecondaryColor">@color/cardSecondaryDark</item>
+        <item name="newMessageGreen">@color/newmessage_bubbleDark</item>
+        <item name="chatSelectHighlight">@color/selectedChatHighlightDark</item>
+        <item name="avatarNoImgBG">@color/lightgrey</item>
+        <item name="avatarNoImgFG">@color/darkgrey</item>
+
+    </style>
+
+</resources>

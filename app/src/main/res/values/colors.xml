@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#757575</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorWhite">#00FFFFFF</color>
+    <color name="colorDark">#E43A3A3A</color>
+    <color name="recoGreen">#68CFC3</color>
+    <color name="chatBaseBG">#E2E2E2</color>
+    <color name="chatPrimaryDark">#FFFFFF</color>
+    <color name="chatContactText">#F3F3F3</color>
+    <color name="chatSenderText">#BBD9F7</color>
+    <color name="statusDarkTrans">#D0000000</color>
+    <color name="incognitoBaseBG">#242424</color>
+    <color name="incognitoReceivedMessageBG">#1F1F1F</color>
+    <color name="incognitoSentMessageBG">#2E3032</color>
+    <color name="mainstatus">#FFFFFF</color>
+    <color name="dynamicEye">#5C3D3D3D</color>
+    <color name="yellow">#FFFB00</color>
+    <color name="baseColor">#ECECEC</color>
+    <color name="baseColorTwo">#C9CCC2</color>
+
+    <color name="eyered">#FF0000</color>
+    <color name="eyeblue">#FF0000</color>
+    <color name="eyepurple">#FF0000</color>
+    <color name="eyegreen">#FF0000</color>
+
+    <color name="bgLight">#ffff</color>
+    <color name="bgDark">#141414</color>
+    <color name="cardPrimaryLight">#F0F0F0</color>
+    <color name="cardSecondaryLight">#F5F5F5</color>
+    <color name="contrastBGLight">#EBEBEB</color>
+
+    <color name="cardPrimaryDark">#181818</color>
+    <color name="cardSecondaryDark">#131313</color>
+    <color name="contrastBGDark">#212327</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="textPrimaryLight">#181818</color>
+    <color name="textSecondaryLight">#868686</color>
+
+    <color name="textPrimaryDark">#CCCCCC</color>
+    <color name="textSecondaryDark">#616161</color>
+
+    <color name="selectedChatHighlightLight">#0A0AA0F0</color>
+    <color name="selectedChatHighlightDark">#2200796B</color>
+
+    <color name="lightgrey">#F3F3F3</color>
+    <color name="midgrey">#EEEEEE</color>
+    <color name="darkgrey">#8B8B8B</color>
+
+
+
+    <color name="themePrimary">#37474f</color>
+    <color name="themePrimaryDark">#2E3C42</color>
+    <color name="themePrimaryLight">#266580</color>
+
+    <color name="lightwhite">#59F3F3F3</color>
+    <color name="quickbargrey">#CACACA</color>
+    <color name="quickbargreylight">#DFDFDF</color>
+
+    <color name="newmessage_bubble">#2DC93B</color>
+    <color name="newmessage_bubbleDark">#00610A</color>
+    <color name="newmessage_read">#0AA0F0</color>
+    <color name="redfire">#9B1D1D</color>
+
+    <color name="activity_highlight">#CF006A</color>
+    <color name="babyblue">#F2F4FA</color>
+    <color name="blue_reply">#4285F4</color>
+    <color name="grey_reply">#CE000000</color>
+    <color name="scrollbar_bg">#000000</color>
+    <color name="status_grey">#E2E2E2</color>
+</resources>

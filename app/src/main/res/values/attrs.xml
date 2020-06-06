@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="bg" format="color"/>
+    <attr name="textPrimaryColor" format="color"/>
+    <attr name="textSecondaryColor" format="color"/>
+    <attr name="cardPrimaryColor" format="color"/>
+    <attr name="cardSecondaryColor" format="color"/>
+    <attr name="contrastBG" format="color"/>
+    <attr name="chatSelectHighlight" format="color"/>
+    <attr name="primaryHighlightColor" format="color"/>
+    <attr name="secondaryHighlightColor" format="color"/>
+    <attr name="newMessageGreen" format="color"/>
+    <attr name="readMessageBlue" format="color"/>
+    <attr name="darkButtonText" format="color"/>
+    <attr name="avatarNoImgBG" format="color"/>
+    <attr name="avatarNoImgFG" format="color"/>
+</resources>
