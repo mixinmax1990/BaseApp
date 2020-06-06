@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 setWhiteSysBar();
             }
         }
+
+        recreate();
         setContentView(R.layout.activity_main);
         main_content = findViewById(R.id.maincontent);
         openFragmentOne();
@@ -66,10 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         parent = findViewById(R.id.parent);
         menu = new SideMenu(this, parent);
-        menu.createMenuTab("One");
-        menu.createMenuTab("Two");
-
-
+        menu.createMenuTab("Contacts");
+        menu.createMenuTab("Camera");
+        menu.createMenuTab("Whatever");
 
     }
     private Fragment fragment;

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout="@layout/preferences_layout"
     app:title="Preferences">
+    <Preference
+        android:key="title"
+        android:title="title"
+        android:layout="@layout/preference_title"
+        android:enabled="false"
+        android:selectable="false"
+        />
     <SwitchPreference
         android:key="dark_mode"
         android:title="DarkMode"
-        android:defaultValue="false"/>
+        android:defaultValue="false" />
+
 </PreferenceScreen>

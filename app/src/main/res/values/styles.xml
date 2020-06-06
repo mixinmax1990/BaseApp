@@ -9,6 +9,7 @@
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/textPrimaryLight</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -33,6 +34,7 @@
 
 
     <style name="AppThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/textPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
