@@ -18,11 +18,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.baseapp.Fragments.FragmentOne;
 import com.example.baseapp.Navigation.SideMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout parent;
     Toolbar toolbar;
     FrameLayout main_content;
+
+    //Menu Bars
+    private List<SideMenu> MenuBars = new ArrayList<SideMenu>();
+    private List<Integer> MenuBarTops = new ArrayList<Integer>();
+    private List<Integer> MenuBarBottoms = new ArrayList<Integer>();;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,14 +78,111 @@ public class MainActivity extends AppCompatActivity {
 
 
         parent = findViewById(R.id.parent);
-        menu = new SideMenu(this, parent);
-        menu.createMenuTab("Contacts");
-        menu.createMenuTab("Camera");
-        menu.createMenuTab("Whatever");
-        menu.createMenuTab("WeHave");
-        menu.createMenuTab("IsJustAmazing");
+        MenuBars.add(new SideMenu(this, parent, "Contacts", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Camera", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Calendar", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Calculator", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Community", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Collaborations", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Contacts", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Camera", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Calendar", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Calculator", MenuBars));
+        MenuBars.add(new SideMenu(this, parent, "Community", MenuBars));
+    }
+
+    private void generateNavigationPositions() {
+
+        for(SideMenu bar : MenuBars){
+            MenuBarTops.add(bar.getTabBar().getTop());
+            MenuBarBottoms.add(bar.getTabBar().getBottom());
+        }
 
     }
+
+    private float x1,x2;
+    static final int MIN_DISTANCE = 150;
+    private boolean windowDimmed = false;
+    private boolean moveTD = false;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+        switch(motionEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                //Log.i("Mouse Down", "Yes");
+                x1 = motionEvent.getX();
+                generateNavigationPositions();
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                //Log.i("Move", "Yes");
+                x2 = motionEvent.getX();
+                float deltaX = x2 - x1;
+                if (Math.abs(deltaX) > MIN_DISTANCE){
+                    if(!moveTD){
+                        //Log.i("Move Left", "Yes");
+                        moveTD = true;
+                        if(deltaX > 0){
+                            Log.i("Move Right", "Yes");
+                            setNavigationPositions((int)motionEvent.getY(), true);
+                        }
+                        else{
+                            Log.i("Move Left", "Yes");
+                            setNavigationPositions((int)motionEvent.getY(), false);
+                        }
+                    }
+
+                }
+                return super.dispatchTouchEvent(motionEvent);
+
+            case MotionEvent.ACTION_UP:
+                //Log.i("Mouse Up", "Yes");
+                moveTD = false;
+                break;
+        }
+
+        return super.dispatchTouchEvent(motionEvent);
+    }
+
+    public void setNavigationPositions(int y, boolean moveRight){
+        int humanPosition;
+        for(int i = 0;i < MenuBars.size(); i++){
+
+            //Log.i("Menu Bar Top", ""+MenuBarTops.get(i)+" -- MenuBar Tag"+ MenuBars.get(i).getTag());
+
+            humanPosition = i + 1;
+            //Log.i("Position", ""+humanPosition);
+            if(isLeft(humanPosition)){
+                if(moveRight){
+                    // check if y is within the range of bar
+                    if(y > MenuBarTops.get(i) & y < MenuBarBottoms.get(i)){
+                        Log.i("Open: ", ""+MenuBars.get(i).getTabBar().getTag());
+                        break;
+                    }
+                }
+            }
+            else{
+                if(!moveRight){
+                    // check if y is within the range of bar
+                    if(y > MenuBarTops.get(i) & y < MenuBarBottoms.get(i)){
+                        Log.i("Open: ", ""+ MenuBars.get(i).getTabBar().getTag());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isLeft(int numb){
+        boolean isEven;
+        if (numb % 2 == 0)
+            isEven = true;
+        else
+            isEven = false;
+
+        return isEven;
+    }
+
     private Fragment fragment;
     private String curFragment;
     private String lastFragment;

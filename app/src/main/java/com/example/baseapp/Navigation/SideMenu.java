@@ -19,37 +19,52 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.baseapp.R;
 
+import java.util.List;
+
 public class SideMenu {
 
-    private int LeftTabNo = 0;
-    private int RightTabNo = 0;
     private int allTabs = 0;
     private boolean atRight = true;
-    private FrameLayout prevTabEven;
-    private FrameLayout prevTabOdd;
+    public FrameLayout prevTabEven;
+    public FrameLayout prevTabOdd;
     private ConstraintLayout parent;
     private ConstraintSet parentConst = new ConstraintSet();
     private Context context;
-    FrameLayout tabCont, tabBar;
-    TextView tabName;
+    public FrameLayout tabCont, tabBar;
+    public TextView tabName;
+    public List<SideMenu> allBars;
     @ColorInt int color;
-    public SideMenu(Context context, ConstraintLayout parent) {
+    public SideMenu(Context context, ConstraintLayout parent, String Name, List<SideMenu> allBars) {
         this.parent = parent;
         this.context = context;
+        this.allBars = allBars;
+        if(allBars != null){
+            allTabs = allBars.size();
+        }
+        else{
+            allTabs = 0;
+        }
 
+        Log.i("AllTabs", "No: "+ allTabs);
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
         theme.resolveAttribute(R.attr.textPrimaryColor, typedValue, true);
         color = typedValue.data;
+
+        createMenuTab(Name);
     }
 
-    public void createMenuTab(String name){
+    public FrameLayout createMenuTab(String name){
         allTabs++;
-        if(atRight){RightTabNo++; atRight = false;}
-        else{LeftTabNo++; atRight = true;}
-        // if number is Prime tab comes Left else Right
+        //Log.i("AllTabs - ", ""+allTabs);
+        if(allTabs != 1){
+                // Get Previous Bar Even
+                prevTabEven = allBars.get(allTabs - 2).prevTabEven;
+                // Get Previous Bar Odd
+                prevTabOdd = allBars.get(allTabs - 2).prevTabOdd;
+        }
 
-
+        //Log.i("Is Running", "Yes");
 
         //create container of menu tab
         tabCont = new FrameLayout(context);
@@ -90,7 +105,6 @@ public class SideMenu {
         tabBar.setId(View.generateViewId());
         tabBar.setBackgroundResource(R.drawable.rounded_menu_bar);
         tabBar.getBackground().setTint(color);
-        ;
         tabBar.setTag(name+"_bar");
         tabBar.setAlpha(.3f);
 
@@ -169,6 +183,8 @@ public class SideMenu {
 
         parentConst.applyTo(parent);
 
+        return tabBar;
+
     }
 
     private void connectTab(boolean isEven){
@@ -217,5 +233,29 @@ public class SideMenu {
 
     public  float convertDpToPixel(float dp){
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    public FrameLayout getTabCont() {
+        return tabCont;
+    }
+
+    public void setTabCont(FrameLayout tabCont) {
+        this.tabCont = tabCont;
+    }
+
+    public FrameLayout getTabBar() {
+        return tabBar;
+    }
+
+    public void setTabBar(FrameLayout tabBar) {
+        this.tabBar = tabBar;
+    }
+
+    public TextView getTabName() {
+        return tabName;
+    }
+
+    public void setTabName(TextView tabName) {
+        this.tabName = tabName;
     }
 }
