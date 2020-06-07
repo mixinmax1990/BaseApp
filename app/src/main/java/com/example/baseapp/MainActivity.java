@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        recreate();
         setContentView(R.layout.activity_main);
         main_content = findViewById(R.id.maincontent);
         openFragmentOne();
@@ -71,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         menu.createMenuTab("Contacts");
         menu.createMenuTab("Camera");
         menu.createMenuTab("Whatever");
+        menu.createMenuTab("WeHave");
+        menu.createMenuTab("IsJustAmazing");
 
     }
     private Fragment fragment;
