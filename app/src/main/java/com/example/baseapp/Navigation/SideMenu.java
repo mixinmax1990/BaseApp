@@ -119,7 +119,7 @@ public class SideMenu {
         tabName.setText(name);
         tabName.setTextColor(color);
         tabName.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        tabName.setAlpha(.3f);
+        tabName.setAlpha(0.3f);
         tabName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
         //ADD Views to Parent

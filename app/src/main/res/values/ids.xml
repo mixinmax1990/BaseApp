@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="frame1" type="id"/>
+    <item name="frame2" type="id"/>
+    <item name="frame3" type="id"/>
+</resources>
