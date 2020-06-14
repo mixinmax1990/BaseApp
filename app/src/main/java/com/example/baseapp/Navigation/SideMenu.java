@@ -33,11 +33,13 @@ public class SideMenu {
     public FrameLayout tabCont, tabBar;
     public TextView tabName;
     public List<SideMenu> allBars;
+    public String type;
     @ColorInt int color;
-    public SideMenu(Context context, ConstraintLayout parent, String Name, List<SideMenu> allBars) {
+    public SideMenu(Context context, ConstraintLayout parent, String Name, List<SideMenu> allBars, String type) {
         this.parent = parent;
         this.context = context;
         this.allBars = allBars;
+        this.type = type;
         if(allBars != null){
             allTabs = allBars.size();
         }
@@ -51,19 +53,25 @@ public class SideMenu {
         theme.resolveAttribute(R.attr.textPrimaryColor, typedValue, true);
         color = typedValue.data;
 
-        createMenuTab(Name);
+
+        createMenuTab(Name, type);
+
     }
 
-    public FrameLayout createMenuTab(String name){
-        allTabs++;
-        //Log.i("AllTabs - ", ""+allTabs);
-        if(allTabs != 1){
-                // Get Previous Bar Even
-                prevTabEven = allBars.get(allTabs - 2).prevTabEven;
-                // Get Previous Bar Odd
-                prevTabOdd = allBars.get(allTabs - 2).prevTabOdd;
-        }
 
+
+    public FrameLayout createMenuTab(String name, String type){
+        if(type == "standard") {
+            allTabs++;
+
+            //Log.i("AllTabs - ", ""+allTabs);
+            if(allTabs != 1){
+                    // Get Previous Bar Even
+                    prevTabEven = allBars.get(allTabs - 2).prevTabEven;
+                    // Get Previous Bar Odd
+                    prevTabOdd = allBars.get(allTabs - 2).prevTabOdd;
+            }
+        }
         //Log.i("Is Running", "Yes");
 
         //create container of menu tab
@@ -88,8 +96,13 @@ public class SideMenu {
             }
         }
 
-        lp_cont.bottomMargin = (int) convertDpToPixel(100);
-
+        if(type == "standard") {
+            lp_cont.bottomMargin = (int) convertDpToPixel(100);
+        }
+        else{
+            lp_cont.bottomMargin = (int) convertDpToPixel(0);
+            lp_cont.topMargin = (int) convertDpToPixel(30);
+        }
         tabCont.setLayoutParams(lp_cont);
         tabCont.setId(View.generateViewId());
         tabCont.setTag(name+"_cont");
@@ -111,16 +124,17 @@ public class SideMenu {
         //create title of menu item
         tabName = new TextView(context);
         ConstraintLayout.LayoutParams lp_name = new ConstraintLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        int textview_margins = (int) convertDpToPixel(20);
-        lp_name.setMargins(textview_margins, textview_margins, textview_margins, textview_margins);
+        int textview_margins = (int) convertDpToPixel(10);
+        tabName.setPadding(textview_margins, textview_margins, textview_margins, textview_margins);
         tabName.setLayoutParams(lp_name);
+        tabName.setShadowLayer(30, 0, 0, Color.WHITE);
         tabName.setId(View.generateViewId());
         tabName.setTag(name+"_name");
         tabName.setText(name);
         tabName.setTextColor(color);
         tabName.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        tabName.setAlpha(0.3f);
-        tabName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        tabName.setAlpha(0f);
+        tabName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
 
         //ADD Views to Parent
         parent.addView(tabCont);
@@ -129,57 +143,72 @@ public class SideMenu {
 
         //Create constraints and add to parent
         parentConst.clone(parent);
-        if(allTabs == 1){
-            //First Tab so TOP and LEFT to Parent
-            parentConst.connect(tabCont.getId(), ConstraintSet.END, parent.getId(), ConstraintSet.END);
-            parentConst.connect(tabCont.getId(), ConstraintSet.TOP, parent.getId(), ConstraintSet.TOP);
-            prevTabOdd = tabCont;
+        switch(type){
+            case "standard":
+                if (allTabs == 1) {
+                    //First Tab so TOP and LEFT to Parent
+                    parentConst.connect(tabCont.getId(), ConstraintSet.END, parent.getId(), ConstraintSet.END);
+                    parentConst.connect(tabCont.getId(), ConstraintSet.TOP, parent.getId(), ConstraintSet.TOP);
+                    prevTabOdd = tabCont;
 
-            connectTab(false);
-            // Connect the Tab Bar to
+                    connectTab(false);
+                    // Connect the Tab Bar to
 
 
-        }
-        else if(allTabs == 2){
-            //Second Tab so TOP and START to Parent
-            parentConst.connect(tabCont.getId(), ConstraintSet.START, parent.getId(), ConstraintSet.START);
-            parentConst.connect(tabCont.getId(), ConstraintSet.TOP, parent.getId(), ConstraintSet.TOP);
-            prevTabEven = tabCont;
+                } else if (allTabs == 2) {
+                    //Second Tab so TOP and START to Parent
+                    parentConst.connect(tabCont.getId(), ConstraintSet.START, parent.getId(), ConstraintSet.START);
+                    parentConst.connect(tabCont.getId(), ConstraintSet.TOP, parent.getId(), ConstraintSet.TOP);
+                    prevTabEven = tabCont;
 
-            connectTab(true);
-        }
-        else{
-            //Not the First Tab so Top to Previous Tab
-            if(!isEven(allTabs)){
-                //number is Even so Tab goes Left
-                parentConst.connect(tabCont.getId(), ConstraintSet.END, parent.getId(), ConstraintSet.END);
-                // And Tab connects to Even Previous Tab
-                parentConst.connect(tabCont.getId(), ConstraintSet.TOP, prevTabOdd.getId(), ConstraintSet.BOTTOM);
-                //Clear the Previous connection of Previous Cont to Parent Bottom
-                parentConst.clear(prevTabOdd.getId(), ConstraintSet.BOTTOM);
-                //Create a new connection to current Tab Container
-                parentConst.connect(prevTabOdd.getId(), ConstraintSet.BOTTOM, tabCont.getId(), ConstraintSet.TOP);
-                prevTabOdd = tabCont;
+                    connectTab(true);
+                } else {
+                    //Not the First Tab so Top to Previous Tab
+                    if (!isEven(allTabs)) {
+                        //number is Even so Tab goes Left
+                        parentConst.connect(tabCont.getId(), ConstraintSet.END, parent.getId(), ConstraintSet.END);
+                        // And Tab connects to Even Previous Tab
+                        parentConst.connect(tabCont.getId(), ConstraintSet.TOP, prevTabOdd.getId(), ConstraintSet.BOTTOM);
+                        //Clear the Previous connection of Previous Cont to Parent Bottom
+                        parentConst.clear(prevTabOdd.getId(), ConstraintSet.BOTTOM);
+                        //Create a new connection to current Tab Container
+                        parentConst.connect(prevTabOdd.getId(), ConstraintSet.BOTTOM, tabCont.getId(), ConstraintSet.TOP);
+                        prevTabOdd = tabCont;
 
-                connectTab(false);
-            }
-            else{
-                //number is Odd so Tab goes Right
+                        connectTab(false);
+                    } else {
+                        //number is Odd so Tab goes Right
+                        parentConst.connect(tabCont.getId(), ConstraintSet.START, parent.getId(), ConstraintSet.START);
+                        // And Tab connects to Odd Previous Tab
+                        parentConst.connect(tabCont.getId(), ConstraintSet.TOP, prevTabEven.getId(), ConstraintSet.BOTTOM);
+                        //Clear the Previus connection of Previous Cont to Parent Bottom
+                        parentConst.clear(prevTabEven.getId(), ConstraintSet.BOTTOM);
+                        //Create a new connection to current Tab Container
+                        parentConst.connect(prevTabEven.getId(), ConstraintSet.BOTTOM, tabCont.getId(), ConstraintSet.TOP);
+                        prevTabEven = tabCont;
+
+                        connectTab(true);
+                    }
+                }
+
+                //Bottom Always connects to Parent
+                parentConst.connect(tabCont.getId(), ConstraintSet.BOTTOM, parent.getId(), ConstraintSet.BOTTOM);
+                break;
+
+            case "setleft":
                 parentConst.connect(tabCont.getId(), ConstraintSet.START, parent.getId(), ConstraintSet.START);
-                // And Tab connects to Odd Previous Tab
-                parentConst.connect(tabCont.getId(), ConstraintSet.TOP, prevTabEven.getId(), ConstraintSet.BOTTOM);
-                //Clear the Previus connection of Previous Cont to Parent Bottom
-                parentConst.clear(prevTabEven.getId(), ConstraintSet.BOTTOM);
-                //Create a new connection to current Tab Container
-                parentConst.connect(prevTabEven.getId(), ConstraintSet.BOTTOM, tabCont.getId(), ConstraintSet.TOP);
-                prevTabEven = tabCont;
+                // Connect to to left Cont;
+                parentConst.connect(tabCont.getId(), ConstraintSet.BOTTOM, allBars.get(1).getTabCont().getId(), ConstraintSet.TOP);
+                //Connect to parent Top
+                parentConst.connect(tabCont.getId(), ConstraintSet.TOP, parent.getId(), ConstraintSet.TOP);
+                connectTab(false);
+                break;
 
-                connectTab(true);
-            }
+            default:
+                break;
+
         }
 
-        //Bottom Always connects to Parent
-        parentConst.connect(tabCont.getId(), ConstraintSet.BOTTOM, parent.getId(), ConstraintSet.BOTTOM);
 
         parentConst.applyTo(parent);
 

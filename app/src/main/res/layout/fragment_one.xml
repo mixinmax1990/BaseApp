@@ -8,11 +8,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Fragment One"
+        android:text="Fragment Two has Loaded Asyncronously. Check the Edge Loading Speed"
         android:gravity="center"
         android:textColor="@android:color/black"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

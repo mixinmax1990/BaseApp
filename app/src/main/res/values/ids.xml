@@ -3,4 +3,5 @@
     <item name="frame1" type="id"/>
     <item name="frame2" type="id"/>
     <item name="frame3" type="id"/>
+    <item name="progressBar" type="id"/>
 </resources>
