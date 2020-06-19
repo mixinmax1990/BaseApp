@@ -1,40 +1,31 @@
 package com.example.baseapp;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.animation.Animator;
-import android.animation.ValueAnimator;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.baseapp.Fragments.FragmentFour;
 import com.example.baseapp.Fragments.FragmentOne;
+import com.example.baseapp.Fragments.FragmentThree;
+import com.example.baseapp.Fragments.FragmentTwo;
 import com.example.baseapp.Interfaces.FinishedInflating;
 import com.example.baseapp.Interfaces.NavigationPosition;
 import com.example.baseapp.Interfaces.SwitchFrames;
@@ -47,9 +38,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationPosition, SwitchFrames, FinishedInflating {
 
+    public FrameLayout leftFrame;
+    public FrameLayout centerFrame;
+    public FrameLayout rightFrame;
     SideMenu menu;
     ConstraintLayout parent;
     Toolbar toolbar;
+    int DisplayWidth;
+    FrameLayout statusbarspace;
     //FrameLayout main_content;
     //FrameLayout main_content_L;
     //FrameLayout main_content_R;
@@ -57,14 +53,18 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
     private List<SideMenu> MenuBars = new ArrayList<SideMenu>();
     private List<Integer> MenuBarTops = new ArrayList<Integer>();
     private List<Integer> MenuBarBottoms = new ArrayList<Integer>();
-
     private NavigationFrames NavigationFrames;
-    int DisplayWidth;
+    private Fragment fragment;
+    private String curFragment;
+    private String lastFragment;
+    private int statusBarHeight;
 
-    public FrameLayout leftFrame;
-    public FrameLayout centerFrame;
-    public FrameLayout rightFrame;
-
+    //-------------------------  Evaluation and System Settings Code -----------------------
+    public static float roundFloats(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
         MenuBars.add(new SideMenu(this, parent, "Friends", MenuBars, "standard"));
         MenuBars.add(new SideMenu(this, parent, "Settings", MenuBars, "setleft"));
 
+
         NavigationFrames.setMenuBars(MenuBars);
         leftFrame = NavigationFrames.leftFrame;
         centerFrame = NavigationFrames.centerFrame;
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent motionEvent) {
-        switch(motionEvent.getAction()){
+        switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 NavigationFrames.ActionDown(motionEvent);
                 break;
@@ -123,21 +124,20 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
         return super.dispatchTouchEvent(motionEvent);
     }
 
-    private void setThemeMode(){
+    private void setThemeMode() {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean darkPref = prefs.contains("dark_mode");
-        if(darkPref){
-            boolean dark = prefs.getBoolean("dark_mode",false);
+        if (darkPref) {
+            boolean dark = prefs.getBoolean("dark_mode", false);
 
-            if(dark){
+            if (dark) {
                 dark = true;
                 //set the Theme to Dark
                 setTheme(R.style.AppThemeDark);
                 setDarkSysBar();
 
-            }
-            else{
+            } else {
                 dark = false;
                 //set the Theme To Light
                 setTheme(R.style.AppThemeLight);
@@ -146,30 +146,15 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
         }
     }
 
-    //-------------------------  Evaluation and System Settings Code -----------------------
-    public static float roundFloats(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
-    }
-
-
-
-    private boolean isLeft(int numb){
+    private boolean isLeft(int numb) {
         boolean isEven;
-        if (numb % 2 == 0)
-            isEven = true;
-        else
-            isEven = false;
+        isEven = numb % 2 == 0;
 
         return isEven;
     }
 
-    private Fragment fragment;
-    private String curFragment;
-    private String lastFragment;
     //Open Fragments
-    private void openFragmentOne(FrameLayout frame){
+    private void openFragmentOne(FrameLayout frame) {
         fragmentNavigation("one");
         frame.removeAllViews();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -184,7 +169,52 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
         //showMainWindow();
     }
 
-    private void openPreferences(FrameLayout Frame){
+    private void openFragmentTwo(FrameLayout frame) {
+        fragmentNavigation("two");
+        frame.removeAllViews();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        fragment = new FragmentTwo();
+        // Begin the transaction
+        //ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        // Replace the contents of the container with the new fragment
+        ft.replace(frame.getId(), fragment);
+        // or ft.add(R.id.your_placeholder, new FooFragment());
+        // Complete the changes added above
+        ft.commit();
+        //showMainWindow();
+    }
+
+    private void openFragmentThree(FrameLayout frame) {
+        fragmentNavigation("three");
+        frame.removeAllViews();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        fragment = new FragmentThree();
+        // Begin the transaction
+        //ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        // Replace the contents of the container with the new fragment
+        ft.replace(frame.getId(), fragment);
+        // or ft.add(R.id.your_placeholder, new FooFragment());
+        // Complete the changes added above
+        ft.commit();
+        //showMainWindow();
+    }
+
+    private void openFragmentFour(FrameLayout frame) {
+        fragmentNavigation("four");
+        frame.removeAllViews();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        fragment = new FragmentFour();
+        // Begin the transaction
+        //ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        // Replace the contents of the container with the new fragment
+        ft.replace(frame.getId(), fragment);
+        // or ft.add(R.id.your_placeholder, new FooFragment());
+        // Complete the changes added above
+        ft.commit();
+        //showMainWindow();
+    }
+
+    private void openPreferences(FrameLayout Frame) {
         fragmentNavigation("pref");
         Frame.removeAllViews();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -200,30 +230,29 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
 
     }
 
-    private void fragmentNavigation(String cur){
-        if(curFragment == null){
+    private void fragmentNavigation(String cur) {
+        if (curFragment == null) {
             curFragment = cur;
-        }
-        else{
+        } else {
             lastFragment = curFragment;
             curFragment = cur;
         }
 
     }
+
     @Override
     public void onBackPressed() {
 
         //Load Previos Fragment
-        if(lastFragment.isEmpty()){
+        if (lastFragment.isEmpty()) {
             super.onBackPressed();
-        }
-        else{
-            switch(lastFragment){
+        } else {
+            switch (lastFragment) {
                 case "one":
                     //openFragmentOne();
                     break;
                 case "pref":
-                   // openPreferences();
+                    // openPreferences();
                     break;
                 default:
                     super.onBackPressed();
@@ -233,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -243,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.item1:
                 //openPreferences();
                 return true;
@@ -254,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
 
     }
 
-    public void setWhiteSysBar(){
+    public void setWhiteSysBar() {
 //Log.i("Dark","False");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View view = getWindow().getDecorView();
@@ -267,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
         }
     }
 
-    public void setDarkSysBar(){
+    public void setDarkSysBar() {
         //Log.i("Dark","True");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View view = getWindow().getDecorView();
@@ -275,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
             flags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
             //flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             view.setSystemUiVisibility(flags);
-            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.cardPrimaryDark));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.cardPrimaryDark));
 
             //ContextCompat.getColor(this,R.color.white)
 
@@ -290,10 +320,8 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
         }
         return result;
     }
-    FrameLayout statusbarspace;
-    private int statusBarHeight;
 
-    public void setStatusbarspace(){
+    public void setStatusbarspace() {
         statusbarspace = findViewById(R.id.statusspace);
         statusbarspace.setVisibility(View.VISIBLE);
         statusBarHeight = getStatusBarHeight();
@@ -302,7 +330,8 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
         sbsLP.height = statusBarHeight;
         statusbarspace.setLayoutParams(sbsLP);
     }
-    public void transparentStatus(){
+
+    public void transparentStatus() {
         statusbarspace = findViewById(R.id.statusspace);
 
         //statusbarspace.setVisibility(View.GONE);
@@ -319,29 +348,39 @@ public class MainActivity extends AppCompatActivity implements NavigationPositio
 
         }
     }
-    public  float convertDpToPixel(float dp){
+
+    public float convertDpToPixel(float dp) {
         return dp * ((float) this.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
 
     @Override
     public void gotPosition(boolean isLeft, String tab) {
-Log.i("Got Position", ""+tab);
-        Log.i("Left DIr", ""+isLeft);
+        Log.i("Got Position", "" + tab);
+        Log.i("Left DIr", "" + isLeft);
         FrameLayout frame;
-        if(isLeft){
+        if (isLeft) {
             frame = rightFrame;
-        }
-        else{
+        } else {
             frame = leftFrame;
         }
-        switch(tab){
+        switch (tab) {
             case "Settings":
                 //Open Settings fragement
-                    openPreferences(frame);
-                    break;
+                openPreferences(frame);
+                break;
             case "News":
                 openFragmentOne(frame);
+                break;
+            case "Maps":
+                openFragmentTwo(frame);
+                break;
+            case "Friends":
+                openFragmentThree(frame);
+                break;
+            case "Videos":
+                openFragmentFour(frame);
+                break;
             default:
                 break;
         }

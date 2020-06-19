@@ -38,4 +38,5 @@ dependencies {
     implementation "androidx.asynclayoutinflater:asynclayoutinflater:1.0.0"
     implementation 'com.android.support:preference-v7:28.0.0'
     implementation "com.squareup.picasso:picasso:$picassoVersion"
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

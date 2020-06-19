@@ -8,10 +8,12 @@ public class AsyncTasks extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
     }
+
     @Override
     protected Void doInBackground(Void... voids) {
         return null;
     }
+
     @Override
     protected void onPostExecute(Void result) {
         // Set title into TextView

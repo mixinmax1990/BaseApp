@@ -13,9 +13,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.baseapp.R;
 
-public class FragmentOne extends Fragment {
+public class FragmentFour extends Fragment {
 
-    public FragmentOne() {
+    public FragmentFour() {
+
     }
 
     @Nullable
@@ -25,7 +26,7 @@ public class FragmentOne extends Fragment {
         final View root = inflater.inflate(R.layout.empty, container, false);
         AsyncLayoutInflater asyncLayoutInflater = new AsyncLayoutInflater(getContext());
 
-        asyncLayoutInflater.inflate(R.layout.fragment_one, container, new AsyncLayoutInflater.OnInflateFinishedListener() {
+        asyncLayoutInflater.inflate(R.layout.fragment_four, container, new AsyncLayoutInflater.OnInflateFinishedListener() {
             @Override
             public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
                 // Layout Asynchronously Inflated
