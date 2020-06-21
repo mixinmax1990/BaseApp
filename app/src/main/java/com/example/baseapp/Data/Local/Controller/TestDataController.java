@@ -27,7 +27,7 @@ public class TestDataController extends DatabaseHelper {
 
     //Define Data Manipulation
 
-    public void enterData(TestModel model){
+    public long enterData(TestModel model){
         db = this.getWritableDatabase();
 
         values = new ContentValues();
@@ -38,6 +38,8 @@ public class TestDataController extends DatabaseHelper {
         values.put(testTable.getDataFour(), model.getTest_data_four());
 
         long insert = db.insert(testTable.getTableName(), null, values);
+
+        return insert;
     }
 
     public List<TestModel> getAllData(){

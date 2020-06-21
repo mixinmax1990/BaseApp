@@ -51,7 +51,8 @@ public class FragmentTwo extends Fragment {
                 data.setTest_data_four("Finale");
 
                 //Store Data into Database
-                DB.TestData.enterData(data);
+                long result = DB.TestData.enterData(data);
+                Log.i("Result", ""+result);
 
 
                 //Read Thrue all of the Data
